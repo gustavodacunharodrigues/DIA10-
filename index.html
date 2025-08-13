@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>🙏🙏</title>
+  <title>🙏🙏/title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
     :root{
@@ -19,7 +19,7 @@
     }
     .card{
       width:min(680px, 92vw); background:var(--glass); border:1px solid rgba(255,255,255,.08);
-      border-radius:20px; box-shadow:0 20px 60px rgba(0,0,0,.45); padding:28px; text-align:center;
+      border-radius:20px; box-shadow:0 20px 60px rgba(0,0,0,.45); padding:28px; text-align:center; position:relative;
     }
     h1{margin:0 0 8px; font-weight:800; font-size:clamp(26px, 4vw, 40px)}
     p{margin:0; color:var(--muted)}
@@ -31,13 +31,16 @@
     #noBtn.flee{position:absolute}
     .hidden{display:none}
     .foto-final{width:80%; border-radius:16px; margin-top:20px}
+    .close-btn{
+      position:absolute; top:12px; right:12px; background:var(--danger); color:#fff;
+      border:none; border-radius:50%; width:36px; height:36px; font-size:18px; cursor:pointer;
+    }
   </style>
 </head>
 <body>
   <div class="card">
     <section id="step1">
-      <!-- ALTERAR TEXTO AQUI -->
-      <p class="q">REMARCAR O DIA 10 PRA ESSE SÁBADO? 🙏💖</p>
+      <p class="q">REMARCAR O DIA 10 PRA ESSE SÁBADO? 🙏</p>
       <div class="btns" id="btnArea">
         <button id="yesBtn">SIM 🙌</button>
         <button id="noBtn">NÃO 🙄</button>
@@ -45,9 +48,9 @@
     </section>
 
     <section id="step2" class="hidden">
-      <!-- ALTERAR AQUI PARA SUA FOTO E MENSAGEM -->
+      <button class="close-btn" id="closeBtn">×</button>
       <img src="IMG.jpeg" alt="Minha foto" class="foto-final">
-      <p class="q">Te amo 💖</p>
+      <p class="q">Te amo! 💖</p>
     </section>
   </div>
 
@@ -57,6 +60,7 @@
     const btnArea = document.getElementById('btnArea');
     const step1 = document.getElementById('step1');
     const step2 = document.getElementById('step2');
+    const closeBtn = document.getElementById('closeBtn');
 
     let escapes = 0;
     function moveNo(){
@@ -64,7 +68,10 @@
       const area = btnArea.getBoundingClientRect();
       const maxX = area.width - noBtn.offsetWidth;
       const maxY = area.height - noBtn.offsetHeight;
-      noBtn.style.transform = `translate(${Math.random()*maxX}px, ${Math.random()*maxY}px)`;
+      // movimento mais rápido e aleatório
+      const x = Math.random()*maxX*1.2 - maxX*0.1;
+      const y = Math.random()*maxY*1.2 - maxY*0.1;
+      noBtn.style.transform = `translate(${x}px, ${y}px)`;
       escapes++;
       yesBtn.style.transform = `scale(${1 + escapes*0.05})`;
     }
@@ -75,6 +82,14 @@
     yesBtn.addEventListener('click', ()=>{
       step1.classList.add('hidden');
       step2.classList.remove('hidden');
+    });
+
+    closeBtn.addEventListener('click', ()=>{
+      step2.classList.add('hidden');
+      step1.classList.remove('hidden');
+      yesBtn.style.transform = 'scale(1)';
+      escapes = 0;
+      noBtn.style.transform = 'translate(0,0)';
     });
   </script>
 </body>
